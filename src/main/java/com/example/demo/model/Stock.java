@@ -1,36 +1,28 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "stocks")
+@Table(
+        name = "stocks",
+        uniqueConstraints = @UniqueConstraint(columnNames = "ticker")
+)
 public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String ticker;
 
     private String companyName;
+
     private String sector;
-    private Boolean isActive;
 
-    @OneToMany(mappedBy = "stock")
-    private List<PortfolioHolding> portfolioHoldings;
+    private Boolean active = true;
 
-    public Stock() {
-    }
-
-    public Stock(String ticker, String companyName, String sector, Boolean isActive) {
-        this.ticker = ticker;
-        this.companyName = companyName;
-        this.sector = sector;
-        this.isActive = isActive;
-    }
-
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -63,19 +55,11 @@ public class Stock {
         this.sector = sector;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public List<PortfolioHolding> getPortfolioHoldings() {
-        return portfolioHoldings;
-    }
-
-    public void setPortfolioHoldings(List<PortfolioHolding> portfolioHoldings) {
-        this.portfolioHoldings = portfolioHoldings;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

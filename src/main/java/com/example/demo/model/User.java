@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,26 +11,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String role;
+
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserPortfolio> userPortfolios;
+    // ===== Constructors =====
+    public User() {}
 
-    public User() {
-    }
-
-    public User(String email, String password, String role, LocalDateTime createdAt) {
+    public User(Long id, String email, String password, String role) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDateTime.now();
     }
 
+    // ===== Getters & Setters =====
     public Long getId() {
         return id;
     }
@@ -51,15 +53,15 @@ public class User {
     public String getPassword() {
         return password;
     }
-
+ 
     public void setPassword(String password) {
         this.password = password;
     }
-
+ 
     public String getRole() {
         return role;
     }
-
+ 
     public void setRole(String role) {
         this.role = role;
     }
@@ -67,16 +69,8 @@ public class User {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+ 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public List<UserPortfolio> getUserPortfolios() {
-        return userPortfolios;
-    }
-
-    public void setUserPortfolios(List<UserPortfolio> userPortfolios) {
-        this.userPortfolios = userPortfolios;
     }
 }

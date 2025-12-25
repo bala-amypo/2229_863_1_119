@@ -1,7 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "risk_analysis_results")
@@ -12,30 +13,21 @@ public class RiskAnalysisResult {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "portfolio_id")
     private UserPortfolio portfolio;
 
-    private LocalDateTime analysisDate;
+    private Timestamp analysisDate;
+
     private Double highestStockPercentage;
+
+    private Double highestSectorPercentage;
+
     private Boolean isHighRisk;
 
-    public RiskAnalysisResult() {
-    }
+    private String notes;
 
-    public RiskAnalysisResult(UserPortfolio portfolio, LocalDateTime analysisDate, Double highestStockPercentage,
-            Boolean isHighRisk) {
-        this.portfolio = portfolio;
-        this.analysisDate = analysisDate;
-        this.highestStockPercentage = highestStockPercentage;
-        this.isHighRisk = isHighRisk;
-    }
-
+    // Getters & Setters
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public UserPortfolio getPortfolio() {
@@ -46,11 +38,11 @@ public class RiskAnalysisResult {
         this.portfolio = portfolio;
     }
 
-    public LocalDateTime getAnalysisDate() {
+    public Timestamp getAnalysisDate() {
         return analysisDate;
     }
 
-    public void setAnalysisDate(LocalDateTime analysisDate) {
+    public void setAnalysisDate(Timestamp analysisDate) {
         this.analysisDate = analysisDate;
     }
 
@@ -62,11 +54,27 @@ public class RiskAnalysisResult {
         this.highestStockPercentage = highestStockPercentage;
     }
 
-    public Boolean getIsHighRisk() {
+    public Double getHighestSectorPercentage() {
+        return highestSectorPercentage;
+    }
+
+    public void setHighestSectorPercentage(Double highestSectorPercentage) {
+        this.highestSectorPercentage = highestSectorPercentage;
+    }
+
+    public Boolean isHighRisk() {
         return isHighRisk;
     }
 
-    public void setIsHighRisk(Boolean isHighRisk) {
-        this.isHighRisk = isHighRisk;
+    public void setHighRisk(Boolean highRisk) {
+        isHighRisk = highRisk;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

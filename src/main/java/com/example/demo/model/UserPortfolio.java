@@ -1,39 +1,41 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
+
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "user_portfolios")
+@Table(
+        name = "user_portfolios",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "portfolioName"})
+)
 public class UserPortfolio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     private String portfolioName;
-    private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "portfolio")
-    private List<PortfolioHolding> portfolioHoldings;
+    private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "portfolio")
-    private List<RiskAnalysisResult> riskAnalysisResults;
+    private Timestamp updatedAt;
 
-    public UserPortfolio() {
+    private Boolean active = true;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public UserPortfolio(User user, String portfolioName, LocalDateTime createdAt) {
-        this.user = user;
-        this.portfolioName = portfolioName;
-        this.createdAt = createdAt;
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -42,12 +44,12 @@ public class UserPortfolio {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getPortfolioName() {
@@ -58,27 +60,19 @@ public class UserPortfolio {
         this.portfolioName = portfolioName;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
-    public List<PortfolioHolding> getPortfolioHoldings() {
-        return portfolioHoldings;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setPortfolioHoldings(List<PortfolioHolding> portfolioHoldings) {
-        this.portfolioHoldings = portfolioHoldings;
-    }
-
-    public List<RiskAnalysisResult> getRiskAnalysisResults() {
-        return riskAnalysisResults;
-    }
-
-    public void setRiskAnalysisResults(List<RiskAnalysisResult> riskAnalysisResults) {
-        this.riskAnalysisResults = riskAnalysisResults;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

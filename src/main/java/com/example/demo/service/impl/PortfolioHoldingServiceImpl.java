@@ -1,44 +1,27 @@
-package com.example.demo.service;
+package com.example.demo.security;
 
-import com.example.demo.model.PortfolioHolding;
-import com.example.demo.repository.PortfolioHoldingRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+@Component
+public class JwtUtil {
 
-@Service
-public class PortfolioHoldingServiceImpl implements PortfolioHoldingService {
-
-    private final PortfolioHoldingRepository repository;
-
-    public PortfolioHoldingServiceImpl(PortfolioHoldingRepository repository) {
-        this.repository = repository;
+    public String generateToken(String email, String role, Long userId) {
+        return email + "|" + role + "|" + userId;
     }
 
-    @Override
-    public PortfolioHolding createHolding(PortfolioHolding holding) {
-        return repository.save(holding);
+    public boolean validateToken(String token) {
+        return token != null && token.contains("|");
     }
 
-    @Override
-    public PortfolioHolding updateHolding(Long id, PortfolioHolding holding) {
-        holding.setId(id);
-        return repository.save(holding);
+    public String extractEmail(String token) {
+        return token.split("\\|")[0];
     }
 
-    @Override
-    public PortfolioHolding getHoldingById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("PortfolioHolding not found"));
+    public String extractRole(String token) {
+        return token.split("\\|")[1];
     }
 
-    @Override
-    public List<PortfolioHolding> getHoldingsByPortfolio(Long portfolioId) {
-        return repository.findByPortfolioId(portfolioId);
-    }
-
-    @Override
-    public void deleteHolding(Long id) {
-        repository.deleteById(id);   // ✅ ADD THIS
+    public Long extractUserId(String token) {
+        return Long.parseLong(token.split("\\|")[2]);
     }
 }

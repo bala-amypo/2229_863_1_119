@@ -9,3 +9,4 @@ public interface UserPortfolioRepository extends JpaRepository<UserPortfolio, Lo
 
     List<UserPortfolio> findByUserId(Long userId);
 }
+
